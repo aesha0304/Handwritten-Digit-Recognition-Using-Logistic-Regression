@@ -25,7 +25,7 @@ This project uses the [MNIST dataset](https://www.openml.org/d/554), a well-know
 ## Installation
 
 1. Clone this repository:
-   git clone https://github.com/yourusername/handwritten-digit-recognition.git
+   git clone https://github.com/aesha0304/handwritten-digit-recognition.git
 2. Navigate into the project directory:
    cd handwritten-digit-recognition
 3. Install the required dependencies:
@@ -35,12 +35,12 @@ This project uses the [MNIST dataset](https://www.openml.org/d/554), a well-know
 
 ### Training the Model
 To train the model from scratch:
-   python src/main.py --train
+   python src/main.py
    This will load the MNIST data, preprocess it, and train the model with logistic regression.
 
 ### Visualizing Sample Predictions
 To visualize predictions on random test samples:
-   python src/main.py --evaluate
+   python src/main.py 
 
 
 ### Predicting Custom Images
