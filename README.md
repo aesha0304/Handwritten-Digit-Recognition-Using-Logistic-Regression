@@ -12,8 +12,7 @@ This project implements a multi-class logistic regression model for handwritten 
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [Future Enhancements](#future-enhancements)
-- [Contributors](#contributors)
-
+  
 ## Project Features
 - Logistic regression model for multi-class classification using one-vs-all strategy.
 - Custom image prediction functionality for real-world applications.
