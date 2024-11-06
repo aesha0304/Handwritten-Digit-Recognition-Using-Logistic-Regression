@@ -4,7 +4,8 @@ import numpy as np
 import os
 import pickle
 import random
-from PIL import Image  
+from PIL import Image, ImageFilter, ImageOps
+import matplotlib.pyplot as plt
 
 X_train, y_train, X_test, y_test = load_mnist_data()
 
@@ -19,18 +20,18 @@ def calculate_accuracy(model, X_test, y_test):
     print(f"Model Accuracy: {accuracy:.2f}%")
     return accuracy
 
-#if os.path.exists(model_filename):
- #   print("Loading saved model parameters...")
-  #  with open(model_filename, "rb") as file:
-   #     model = pickle.load(file)
-#else:
-model = LogisticRegressionOvA(num_classes=10, learning_rate=0.01, n_iterations=500) 
-print("Training the multi-class logistic regression model...")
-model.train(X_train, y_train)
-print("Training complete.\n")
+if os.path.exists(model_filename):
+    print("Loading saved model parameters...")
+    with open(model_filename, "rb") as file:
+        model = pickle.load(file)
+else:
+    model = LogisticRegressionOvA(num_classes=10, learning_rate=0.01, n_iterations=500) 
+    print("Training the multi-class logistic regression model...")
+    model.train(X_train, y_train)
+    print("Training complete.\n")
 
-with open(model_filename, "wb") as file:
-    pickle.dump(model, file)
+    with open(model_filename, "wb") as file:
+        pickle.dump(model, file)
 
 accuracy = calculate_accuracy(model, X_test, y_test)
 
@@ -45,16 +46,20 @@ def evaluate_random_samples(model, X_test, y_test, n_samples=5):
 
 evaluate_random_samples(model, X_test, y_test, n_samples=5)
 
-
-def predict_custom_image(image_path):
-    image = Image.open(image_path).convert("L")  
+def preprocess_image(image):
+    image = image.convert("L")
     image = image.resize((28, 28))  
     image_data = np.array(image) / 255.0 
+    image_data = np.array(image.filter(ImageFilter.GaussianBlur(radius=1)))
+    image_data = np.array(ImageOps.autocontrast(image))
     image_data = image_data.reshape(1, -1)
+    return image_data / 255.0  
 
+def predict_custom_image(image_path):
+    image = Image.open(image_path)
+    image_data = preprocess_image(image)
     predicted_label = model.predict(image_data)[0]
     print(f"Predicted label for the image '{image_path}': {predicted_label}")
-
     visualize_image(image_data.reshape(28, 28))
 
 predict_custom_image('image.png')
